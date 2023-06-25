@@ -6,7 +6,16 @@ ARG NODE_ENV
 ENV NODE_ENV=$NODE_ENV
 
 ARG NEXT_PUBLIC_BACKEND_URL
-ENV NEXT_PUBLIC_BACKEND_URL $NEXT_PUBLIC_BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+
+ARG NEXTAUTH_URL
+ENV NEXTAUTH_URL=$NEXTAUTH_URL
+
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+
+ARG NEXTAUTH_SECRET
+ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
 
 # Needed for the wait-for-db script
 RUN apk add --no-cache netcat-openbsd
@@ -32,6 +41,7 @@ COPY entrypoint.sh /
 RUN apk add --no-cache dos2unix netcat-openbsd \
     && dos2unix /entrypoint.sh
 
+RUN npm run build
 
 # Expose the port the app will run on
 EXPOSE 3000
@@ -39,4 +49,4 @@ EXPOSE 3000
 ENTRYPOINT ["sh", "/entrypoint.sh"]
 
 # Start the application
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
