@@ -6,13 +6,15 @@ services:
     build:
       context: ./next
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BACKEND_URL: 'http://localhost:8000'
+    environment:
+      DATABASE_URL: "mysql://reworkd_platform:reworkd_platform@db:3307/reworkd_platform"
     ports:
       - "3000:3000"
-    volumes:
-      - ./next/.env:/next/.env
-      - ./next/:/next/
-      - /next/node_modules
-      - /next/.next
+    labels:
+      dev.ergomake.env.replace-arg.NEXT_PUBLIC_BACKEND_URL: 'https://{{ services.platform.url }}'
+    env_file: .env.example
 
   platform:
     container_name: platform
@@ -22,10 +24,6 @@ services:
     ports:
       - "8000:8000"
     restart: always
-    volumes:
-      - ./platform:/app/src/
-    env_file:
-      - next/.env
     environment:
       REWORKD_PLATFORM_HOST: 0.0.0.0
       REWORKD_PLATFORM_DB_HOST: db
@@ -35,6 +33,8 @@ services:
       REWORKD_PLATFORM_DB_BASE: "reworkd_platform"
     depends_on:
       - db
+    labels:
+      dev.ergomake.env.replace-arg.FRONTEND_URL: 'https://{{ services.next.url }}'
 
   db:
     image: mysql:8.0
@@ -43,7 +43,7 @@ services:
     build:
       context: ./db
     ports:
-      - "3307:3307"
+      - "3307"
     environment:
       MYSQL_DATABASE: "reworkd_platform"
       MYSQL_USER: "reworkd_platform"
@@ -56,7 +56,6 @@ services:
 
   weaviate:
     image: semitechnologies/weaviate:1.19.6
-    restart: on-failure:0
     ports:
       - "8080:8080"
     environment:
