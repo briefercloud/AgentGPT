@@ -8,13 +8,14 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_BACKEND_URL: 'http://localhost:8000'
-    environment:
-      DATABASE_URL: "mysql://reworkd_platform:reworkd_platform@db:3307/reworkd_platform"
+        NEXTAUTH_URL: "http://localhost:3000"
+        DATABASE_URL: "mysql://reworkd_platform:reworkd_platform@db:3307/reworkd_platform"
+        NEXTAUTH_SECRET: "changeme"
     ports:
       - "3000:3000"
     labels:
       dev.ergomake.env.replace-arg.NEXT_PUBLIC_BACKEND_URL: 'https://{{ services.platform.url }}'
-    env_file: .env.example
+      dev.ergomake.env.replace-arg.NEXTAUTH_URL: 'https://{{ services.next.url }}'
 
   platform:
     container_name: platform
