@@ -5,7 +5,6 @@ services:
     container_name: next
     build:
       context: ./next
-      dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_BACKEND_URL: 'http://localhost:8000'
         NEXTAUTH_URL: "http://localhost:3000"
@@ -16,6 +15,11 @@ services:
     labels:
       dev.ergomake.env.replace-arg.NEXT_PUBLIC_BACKEND_URL: 'https://{{ services.platform.url }}'
       dev.ergomake.env.replace-arg.NEXTAUTH_URL: 'https://{{ services.next.url }}'
+
+  docs:
+    build: ./docs
+    ports:
+      - "3001:3001"
 
   platform:
     container_name: platform
