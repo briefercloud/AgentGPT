@@ -35,7 +35,7 @@ services:
     depends_on:
       - db
     labels:
-      dev.ergomake.env.replace-arg.FRONTEND_URL: 'https://{{ services.next.url }}'
+      dev.ergomake.env.replace-arg.REWORKD_PLATFORM_FRONTEND_URL: 'https://{{ services.next.url }}'
 
   db:
     image: mysql:8.0

@@ -1,7 +1,7 @@
 FROM python:3.11-slim-buster as prod
 
-ARG FRONTEND_URL
-ENV FRONTEND_URL=$FRONTEND_URL
+ARG REWORKD_PLATFORM_FRONTEND_URL
+ENV REWORKD_PLATFORM_FRONTEND_URL=$REWORKD_PLATFORM_FRONTEND_URL
 
 RUN apt-get update && apt-get install -y \
   default-libmysqlclient-dev \
