@@ -1,0 +1,42 @@
+apps:
+  next:
+    path: "../next"
+    publicPort: "3000"
+    env:
+      NEXT_PUBLIC_BACKEND_URL: "https://{{ apps.platform.url }}"
+      NEXTAUTH_URL: 'https://{{ apps.next.url }}'
+      DATABASE_URL: "mysql://reworkd_platform:reworkd_platform@db:3307/reworkd_platform"
+      NEXTAUTH_SECRET: "changeme"
+
+  platform:
+    path: "../platform"
+    publicPort: "8000"
+    env:
+      REWORKD_PLATFORM_HOST: 0.0.0.0
+      REWORKD_PLATFORM_DB_HOST: db
+      REWORKD_PLATFORM_DB_PORT: "3307"
+      REWORKD_PLATFORM_DB_USER: "reworkd_platform"
+      REWORKD_PLATFORM_DB_PASS: "reworkd_platform"
+      REWORKD_PLATFORM_DB_BASE: "reworkd_platform"
+      REWORKD_PLATFORM_FF_MOCK_MODE_ENABLED: "true"
+
+  db:
+    path: "../db"
+    internalPorts:
+      - "3307"
+    env:
+      MYSQL_DATABASE: "reworkd_platform"
+      MYSQL_USER: "reworkd_platform"
+      MYSQL_PASSWORD: "reworkd_platform"
+      MYSQL_ROOT_PASSWORD: "reworkd_platform"
+      MYSQL_TCP_PORT: 3307
+
+  weaviate:
+    image: "semitechnologies/weaviate:1.19.6"
+    publicPort: "8080"
+    env:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      CLUSTER_HOSTNAME: 'node1'
