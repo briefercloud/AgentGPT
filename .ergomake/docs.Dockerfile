@@ -2,14 +2,12 @@ FROM node:19-alpine
 
 WORKDIR /docs
 
-COPY package*.json ./
-
-RUN npm ci
+RUN npm install -g mintlify
 
 COPY . .
 
-RUN npm run build
+RUN mintlify install
 
 EXPOSE 3001
 
-CMD ["npm", "run", "serve", "--", "-p", "3001"]
+CMD ["mintlify", "dev", "--port", "3001"]
