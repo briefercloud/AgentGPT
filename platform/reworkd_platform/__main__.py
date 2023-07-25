@@ -17,4 +17,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    print("a change in the codebase")
     main()
